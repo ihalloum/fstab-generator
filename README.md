@@ -9,7 +9,7 @@ This Script generates /etc/fstab configuration file form YAML file.
 # How to run: 
 - Clone the project:
 
-      `git clone https://www.python.org/downloads/ `
+      `git clone https://github.com/ihalloum/fstab-generator.git `
 - Run the script:
 
       `cd fstab-generator`
