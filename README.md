@@ -4,7 +4,8 @@ This Script generates /etc/fstab configuration file form YAML file.
 
 # Requirements:
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git). 
-- [python](https://www.python.org/downloads/). 
+- [python](https://www.python.org/downloads/).
+- [pip](https://pip.pypa.io/en/stable/)
 
 # How to run: 
 - Clone the project:
