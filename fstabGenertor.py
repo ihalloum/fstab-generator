@@ -18,7 +18,7 @@ def convert(args,parser):
     
     try:
         # Check if the configuration will be written to file and create this file.
-        if args.output[0] == sys.stdout :
+        if args.output == sys.stdout :
             output_file = sys.stdout
         else:
             output_file = open(str(args.output[0]), "w")
@@ -39,11 +39,11 @@ def convert(args,parser):
             dump                = item[1].get("dump",0)
             fsck_order          = item[1].get("pass",0)
             # 
-            device_config_str = "{} {} {} {} {} {}\n".format(device,mount_point,file_system_type,options,dump,fsck_order)
+            device_config_str = "{}\t{}\t{}\t{}\t{}\t{}\n".format(device,mount_point,file_system_type,options,dump,fsck_order)
             config_arr.append(device_config_str)
 
         # Write the device's configuration to stdout or output file, depending on the output argument.
-        output_file.write("/n".join(config_arr)) 
+        output_file.write("".join(config_arr)) 
 
     except Exception as e:
         # Print Error and help messages and exit.
@@ -51,7 +51,7 @@ def convert(args,parser):
         parser.print_help()
         exit(1)
     # CLose the output file.
-    if args.output[0] != sys.stdout :
+    if args.output != sys.stdout :
         output_file.close()
 
 
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='fstabGenerator.py',
                                      usage='%(prog)s [options] <input_YAML_file_path>\n'+ yaml_strucutre_hint_message,
                                      description='Generate /etc/fstab configuration file form YAML file.',
-                                     epilog='Enjoy the program! :)')
+                                     epilog='Enjoy the script! :)')
     # Set the version.
     parser.version = 'fstabGenerator.py version 1.0'
     # Add the input file arguments.
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     # Add the output file arguments.
     parser.add_argument('-o','--output', action='store', nargs=1, help='write the configurations on the output file', default=sys.stdout)
     # Add the version arguments.
-    parser.add_argument('-v','--version', action='version', help='show program\'s version number')
+    parser.add_argument('-v','--version', action='version', help='show script\'s version number')
 
     # Execute parse_args().
     args = parser.parse_args()
