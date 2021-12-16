@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 import sys
 import yaml
 import argparse
@@ -6,29 +7,30 @@ import argparse
 def convert(args,parser):
     try:
         # Open YAML input file to read.
-        with open(args.input,'r') as inputFile:
-            # Store configuration on dictionary.
-            dict = yaml.load(inputFile, Loader=yaml.FullLoader)
-    except:
-        # Print Error and help message and exit.
-        print("Can not open the input file")
+        with open(args.input[0],'r') as input_file:
+            # Store configuration in dictionary.
+            dict = yaml.load(input_file, Loader=yaml.FullLoader)
+    except Exception as e:
+        # Print Error and help messages and exit.
+        print("Can not open the input file -- ",str(e))
         parser.print_help()
         exit(1)
     
     try:
         # Check if the configuration will be written to file and create this file.
-        if args.output == sys.stdout :
+        if args.output[0] == sys.stdout :
             output_file = sys.stdout
         else:
-            output_file = open(str(args.output), "w")
+            output_file = open(str(args.output[0]), "w")
         
-    except:
-        # Print Error and help message and exit.
-        print("Can not create the output file")
+    except Exception as e:
+        # Print Error and help messages and exit.
+        print("Can not create the output file --", str(e))
         parser.print_help()
         exit(1)
-    try:    
-        # Collect the configuration for each device.    
+    try:
+        config_arr = []    
+        # Parssing the configuration for each device.    
         for item in dict["fstab"].items():
             device              = item[0]
             mount_point         = item[1]["mount"]
@@ -36,17 +38,20 @@ def convert(args,parser):
             options             = ",".join(item[1].get("options",[]))
             dump                = item[1].get("dump",0)
             fsck_order          = item[1].get("pass",0)
+            # 
+            device_config_str = "{} {} {} {} {} {}\n".format(device,mount_point,file_system_type,options,dump,fsck_order)
+            config_arr.append(device_config_str)
 
-            # Write the device configuration to stdout or output file, depending on output argument.
-            output_file.write("{} {} {} {} {} {}\n".format(device,mount_point,file_system_type,options,dump,fsck_order)) 
+        # Write the device's configuration to stdout or output file, depending on the output argument.
+        output_file.write("/n".join(config_arr)) 
 
-    except:
-        # Print Error and help message and exit.
-        print(yaml_strucutre_hint_message)
+    except Exception as e:
+        # Print Error and help messages and exit.
+        print("Check the YAML input file structure",str(e))
         parser.print_help()
         exit(1)
     # CLose the output file.
-    if args.output != "stdout" :
+    if args.output[0] != sys.stdout :
         output_file.close()
 
 
