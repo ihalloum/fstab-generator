@@ -16,4 +16,3 @@ fstab:
     options:
       - noexec
       - nosuid
-      - tt=tt
