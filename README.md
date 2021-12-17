@@ -16,7 +16,7 @@ This Script generates /etc/fstab configuration file form YAML file.
       cd fstab-generator
 - Install requirement modules*:
 
-      pip3 install requirements.txt
+      pip3 install -r requirements.txt
 - Run the script*:
 
       python3 ./fstabGenerator.py <YAML_FILE_PATH> --output /etc/fstab
